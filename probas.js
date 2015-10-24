@@ -5,7 +5,7 @@ function make_proba_table()
 	var mort = document.createElement("IMG");
 	var result_array = calculate_proba();
 	
-	mort.setAttribute("src", "../images/smileys/hordes/h_death.gif");
+	mort.setAttribute("src", "./images/smileys/hordes/h_death.gif");
 	mort.setAttribute("alt", "Mort");
 	result_table = document.getElementById("result_table");
 	if (result_table != null)
