@@ -1,0 +1,51 @@
+body
+{
+	background-color : #7E4D2A;
+}
+
+header, footer
+{
+	padding-left:40%;
+	padding-right:auto;
+}
+main
+{
+	width: 1000px;
+	margin: 0 auto;
+}
+
+nav
+{
+	background-color : #BD945C;
+	float : left;
+	width : 250 px;
+	margin-right: 5px;
+	border: ridge 3px #000000;
+	padding : 15px;
+}
+
+section
+{
+	background-color : #BD945C;
+	width : 600px;
+	margin: auto;
+	display: inline-block;
+	border: ridge 3px #000000;
+	padding : 15px;
+}
+
+#proba_form, table
+{
+	display: inline-block;
+}
+
+input
+{
+	background-color: #F0D79E;
+}
+
+a, a:visited, a:hover, a:active
+{
+	color: #FCE1A6;
+	decoration: none;
+}

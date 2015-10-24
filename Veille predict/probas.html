@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+	<head>
+		<title>Chances de survies</title>
+		<meta charset="UTF-8">
+		<meta name="description" content="Outil de calcul de probabilités pour le jeu Hordes">
+		<meta name="keywords" content="HTML, CSS, JavaScript">
+		<meta name="author" content="Max Gautier">
+		<link rel="stylesheet" href="probas.css">
+		<script type="text/javascript" src="probas.js" async></script>
+		<script type="text/javascript" src="form.js" async></script>
+	</head>
+	<body>
+		<header>
+			<h1>Veille Predict<h1>
+		</header>
+		<main>
+		<nav>
+			<ul>
+				<li><a href="http://www.hordes.fr">Hordes.fr</a></li>
+				<li><a href="http://twinoid.com/user/1288552">Mon profil Twinoïd</a></li>
+			</ul>
+		</nav>
+		<section>
+			<h2>Calcul de la probabilité qu'il y ait <em>x</em> nombres de morts</h2>
+			<p>Entrez le nombre de veilleurs</p>
+			<form action="" onsubmit="return false">
+				<input type="number" id="quantity" min="1" max="40" onChange="make_proba_form();"></input>
+			</form>
+		</section>
+		</main>
+		</footer>
+	</body>
+</html>
