@@ -1,5 +1,11 @@
-body
+
+
+
+body 
 {
+	min-height: 100%;
+	margin: 0;
+	padding: 0;
 	background-color : #7E4D2A;
 }
 
@@ -7,6 +13,11 @@ header, footer
 {
 	padding-left:40%;
 	padding-right:auto;
+}
+
+footer
+{
+	margin-bottom: 5%;
 }
 main
 {
