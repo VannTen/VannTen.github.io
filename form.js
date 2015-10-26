@@ -11,11 +11,11 @@ function make_proba_form() // Crée le formulaire s'il n'existe pas
 		form = document.createElement("FORM");
 		form.setAttribute("id","proba_form");
 		form.appendChild(document.createElement("TABLE"));
-		form.appendChild(make_button("make_proba_table", document.createTextNode("Ok")));
 		document.getElementsByTagName("section")[0].appendChild(form);
 		var paragraphe = document.createElement("P");
 		paragraphe.innerHTML = "Entrez les chances de survie pour chaque veilleur (en %)";
 		form.parentNode.insertBefore(paragraphe, form);
+		form.parentNode.insertBefore(make_button("make_proba_table", document.createTextNode("Ok")), form);
 	}
 	modify_table(form.firstChild, number_of_fields);
 	return form;
@@ -40,8 +40,6 @@ function modify_table(table, number_of_rows) // Ajoute ou supprime des champs si
 	}
 	return table;
 }
-
-/* Fonctions qui créent les différents éléments de formulaire */
 
 function make_line(index, element, number) // Index est un élément invariable, que précise number.
 { 

@@ -17,13 +17,12 @@ function make_proba_table()
 	document.getElementsByTagName("section")[0].appendChild(result_table);
 }
 
-/*Récupération des valeurs du formulaire, traitement, et renvoie d'un tableau de résultat */
+/*Récupération des valeurs du formulaire, traitement, arrondi, et renvoie d'un tableau de résultat */
 function calculate_proba()
 {
 	var chances_table;
 	var proba_array=[];
-	var result_array;
-	var proba_tree_depth;
+	var result;
 	
 	chances_table = document.getElementsByClassName("chances");
 	for (i = 0; i < chances_table.length; i++)
@@ -31,30 +30,10 @@ function calculate_proba()
 		if(chances_table[i].value > 0 && chances_table[i].value < 100)
 			proba_array.push(1 - chances_table[i].value/100);
 	}
-	proba_tree_depth = proba_array.length - 1;
-	result_array = new Array(proba_array.length + 1);
-	for (i = 0; i < result_array.length; i++)
-		result_array[i] = 0;
-	make_proba_tree(0,0,1); // Evenement racine : aucun succès enregistré, profondeur nulle, probabilité certaine.
-	for (i = 0; i < result_array.length; i++)
-		result_array[i] = Math.round(result_array[i]*10000)/100; // Conversion en pourcentage pour l'affichage et arrondi.
-	return result_array;
-	
-	/*Simulation de construction d'un arbre de probabilités : tant qu'on a pas atteint une feuille, chaque noeud est un sous arbre ;
-	Lorsqu'on atteint une feuille, on ajoute le résultat à la probabilité totale de x nombre de succès */
-	function make_proba_tree(number_of_success,current_depth, current_proba) 
-	{
-		if (current_depth < proba_tree_depth)
-		{
-			make_proba_tree(number_of_success + 1, current_depth + 1, current_proba * proba_array[current_depth]);
-			make_proba_tree(number_of_success, current_depth + 1, current_proba * (1-proba_array[current_depth]));
-		}
-		else
-		{
-			result_array[number_of_success + 1] += current_proba * proba_array[current_depth];
-			result_array[number_of_success] += current_proba * (1 - proba_array[current_depth]);
-		}
-	}
+	result = proba_map(proba_array.length, proba_array);
+	for (i = 0; i < result.length; i++)
+		result[i] = (Math.round(result[i]*10000))/100;
+	return result;
 }
 
 function fill_table_column(table, nth_column, content, content_is_array)
@@ -91,4 +70,57 @@ function make_table(number_of_rows, number_of_columns)
 		table.appendChild(line);
 	}
 	return table;
+}
+
+/* La fonction crée un tableau de probabilités en s'appuyant sur la précédente colone à chaque fois. 
+La formule générale est P(n, k) = P(n, k - 1) *  (1 - P(k)) + P(n - 1, k - 1) * P(k).
+Où n est le nombre de morts, k le nombre de veilleurs, et P(n, k) la probabilité qu'il y ait n mort parmi les k premiers veilleurs.
+Donc la probabilité qu'il y ait n morts parmi les k premiers veilleurs est égale à la probabilité qu'il y ait n morts parmi les k-1 premiers veilleurs,
+et que le k ème veilleur survive, plus la probabilité qu'il y ait n - 1 morts parmi les k-1 premiers veilleurs, et que le k ème veilleur meure.
+Le cas initial P(0,0) est géré à part. (La probabilité de 0 morts sur 0 veilleurs est de 1)
+Le cas P(0, k) est géré par la première boucle : on admet que P(-1, k) vaut toujours 0. Donc P(n, k) = P(n, k - 1) * 1( - P(k)) + 0 * P(k), soit P(n, k - 1) * 1( - P(k))
+Le cas P(n, k) avec k < n est géré par le seconde de la seconde boucle : comme le nombre de veilleurs est forcément au moins égale au nombre de morts, P(n, k) vaut toujours 0 dans
+ce cas là. On saute donc à k = n, le calcul donne : P(n, k - 1) = 0, donc P(n, k) = 0 * (1 - P(k)) + P(n - 1, k - 1) * P(k), soit P(n - 1, k - 1) * P(k)
+
+Merci à ayalti pour m'avoir mis sur la voie :)
+*/
+function proba_map(nbr_de_veilleurs, death_proba)
+{
+	var x_premiers_veilleurs;
+	var nbr_de_morts;
+	var proba_map;
+	var results;
+	
+	proba_map = new Array(nbr_de_veilleurs + 1);
+		for(i = 0; i <= nbr_de_veilleurs; i++)
+			proba_map[i] = new Array(nbr_de_veilleurs + 1);
+	// Cas initial : P(0,0) = 1
+	nbr_de_morts = 0;
+	x_premiers_veilleurs = nbr_de_morts;
+	proba_map[nbr_de_morts][x_premiers_veilleurs] = 1;
+	x_premiers_veilleurs++;
+	while (x_premiers_veilleurs <= nbr_de_veilleurs) // Cas P(0, k) = P (n, k - 1) * (1 - P(k))
+	{
+		proba_map[nbr_de_morts][x_premiers_veilleurs] =  proba_map[nbr_de_morts][x_premiers_veilleurs - 1] * (1 - death_proba[x_premiers_veilleurs - 1]);
+		x_premiers_veilleurs++;
+	}
+	nbr_de_morts++;
+	while (nbr_de_morts <= nbr_de_veilleurs)
+	{
+		//Cas P(n, k) avec k < n. P(n,k) = P(n - 1, k - 1) * P(k)
+		x_premiers_veilleurs = nbr_de_morts;
+		proba_map[nbr_de_morts][x_premiers_veilleurs] = proba_map[nbr_de_morts - 1][x_premiers_veilleurs - 1] * death_proba[x_premiers_veilleurs - 1];
+		x_premiers_veilleurs++;
+		while (x_premiers_veilleurs <= nbr_de_veilleurs) // Cas général
+		{
+			proba_map[nbr_de_morts][x_premiers_veilleurs] = proba_map[nbr_de_morts][x_premiers_veilleurs - 1] * (1 - death_proba[x_premiers_veilleurs - 1])
+														+ proba_map[nbr_de_morts - 1][x_premiers_veilleurs - 1] * death_proba[x_premiers_veilleurs - 1];
+			x_premiers_veilleurs++;		
+		}
+		nbr_de_morts++;
+	}
+	results = new Array(nbr_de_veilleurs + 1);
+	for (i = 0; i <= nbr_de_veilleurs; i++)
+		results[i]= proba_map[i][nbr_de_veilleurs];
+	return results;
 }
