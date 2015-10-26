@@ -58,3 +58,7 @@ a, a:visited, a:hover, a:active
 	color: #FCE1A6;
 	decoration: none;
 }
+button
+{
+	display: block;
+}
