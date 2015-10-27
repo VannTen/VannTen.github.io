@@ -3,6 +3,7 @@ function make_proba_form() // Crée le formulaire s'il n'existe pas
 {
 	var form;
 	var number_of_fields;
+	var section_textes = document.getElementById("textes");
 	
 	number_of_fields = document.getElementById("quantity").value;
 	form = document.getElementById("proba_form");
@@ -11,11 +12,11 @@ function make_proba_form() // Crée le formulaire s'il n'existe pas
 		form = document.createElement("FORM");
 		form.setAttribute("id","proba_form");
 		form.appendChild(document.createElement("TABLE"));
-		document.getElementsByTagName("section")[0].appendChild(form);
+		document.getElementById("tables").appendChild(form);
 		var paragraphe = document.createElement("P");
 		paragraphe.innerHTML = "Entrez les chances de survie pour chaque veilleur (en %)";
-		form.parentNode.insertBefore(paragraphe, form);
-		form.parentNode.insertBefore(make_button("make_proba_table", document.createTextNode("Ok")), form);
+		section_textes.appendChild(paragraphe);
+		section_textes.appendChild(make_button("make_proba_table", document.createTextNode("Ok")));
 	}
 	modify_table(form.firstChild, number_of_fields);
 	return form;

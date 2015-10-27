@@ -12,42 +12,77 @@ header
 }
 footer
 {
-	vertical-align: center;
-	position: relative;
-	left: 40px;
-	width: 650px;
+	width: 43.75em;
 	margin: auto;
 }
 main
 {
-	width: 1000px;
+	width: 43.75em;
 	margin: 0 auto;
 }
+
 nav
 {
 	background-color : #BD945C;
-	float : left;
-	width : 250 px;
-	margin-right: 5px;
-	border: ridge 3px #000000;
-	padding : 15px;
+	float : right;
+	width : 15.625 em;
+	margin-right: 0.938em;
+	border: ridge 0.188em #000000;
+	padding : 0.938em;
 }
 section
 {
 	background-color : #BD945C;
-	width : 600px;
-	margin: auto;
-	display: inline-block;
-	border: ridge 3px #000000;
-	padding : 15px;
+	border: ridge 0.188em #000000;
+	padding : 0.313em 0.938em;
 }
+
+#textes
+{
+	border-bottom: none;
+}
+#tables
+{
+	border-top: none;
+}
+
 #proba_form, table
 {
 	display: inline-table;
 }
+
+#result_table, #result_table
+{
+	margin-left:3em;
+	border-spacing: 3px 0;
+}
+#result_table td
+{
+	background-color: #8D9155;
+	margin: 1em;
+	text-align: center;
+	width: 2em;
+	min-width: 25px;
+}
+#result_table tr:first-of-type td
+{
+	border-radius: 2.5px 2.5px 0 0;
+}
+
+#result_table tr:last-of-type td
+{
+	border-radius: 0 0 2.5px 2.5px;
+}
+
 p
 {
 	display:inline-block;
+	margin: 0.438em 0;
+}
+
+#moyenne
+{
+	display:block;
 }
 input
 {
@@ -57,8 +92,4 @@ a, a:visited, a:hover, a:active
 {
 	color: #FCE1A6;
 	decoration: none;
-}
-button
-{
-	display: block;
 }

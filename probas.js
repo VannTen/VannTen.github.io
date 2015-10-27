@@ -2,19 +2,44 @@
 function make_proba_table()
 {
 	var result_table;
+	var result = calculate_proba();
+	
+	add_proba_table(result[0]);
+	add_moyenne(result[1]);
+}
+
+function add_proba_table(chances_for_deaths)
+{
+	console.log(chances_for_deaths)
 	var mort = document.createElement("IMG");
-	var result_array = calculate_proba();
+	var section = document.getElementById("tables");
+	var result_table;
 	
 	mort.setAttribute("src", "./images/smileys/hordes/h_death.gif");
 	mort.setAttribute("alt", "Mort");
 	result_table = document.getElementById("result_table");
 	if (result_table != null)
 		result_table.parentNode.removeChild(result_table);
-	result_table = make_table(result_array.length, 2);
+	result_table = make_table(chances_for_deaths.length, 2);
 	result_table.setAttribute("id","result_table");
 	fill_table_column(result_table, 0, mort, false);
-	fill_table_column(result_table, 1, result_array, true);
-	document.getElementsByTagName("section")[0].appendChild(result_table);
+	fill_table_column(result_table, 1, chances_for_deaths, true);
+	section.appendChild(result_table);
+}
+
+function add_moyenne(moyenne)
+{
+	var section = document.getElementById("textes");
+	var moyenne_pond_par;
+	
+	moyenne_pond_par = document.getElementById("moyenne");
+	if (moyenne_pond_par != null)
+		moyenne_pond_par.parentNode.removeChild(moyenne_pond_par);
+	moyenne_pond_par = document.createElement("P");
+	moyenne_pond_par.appendChild(document.createTextNode("Morts en moyenne : " + moyenne));
+	moyenne_pond_par.setAttribute("id", "moyenne");
+	moyenne_pond_par.firstChild = "Morts en moyenne : " + moyenne;
+	section.appendChild(moyenne_pond_par);
 }
 
 /*Récupération des valeurs du formulaire, traitement, arrondi, et renvoie d'un tableau de résultat */
@@ -23,7 +48,9 @@ function calculate_proba()
 	var chances_table;
 	var proba_array=[];
 	var result;
+	var answer;
 	
+	answer = new Array(2);
 	chances_table = document.getElementsByClassName("chances");
 	for (i = 0; i < chances_table.length; i++)
 	{
@@ -31,9 +58,11 @@ function calculate_proba()
 			proba_array.push(1 - chances_table[i].value/100);
 	}
 	result = proba_map(proba_array.length, proba_array);
+	answer[1] = moyenne_pond(result);
+	answer[0] = result;
 	for (i = 0; i < result.length; i++)
 		result[i] = (Math.round(result[i]*10000))/100;
-	return result;
+	return answer;
 }
 
 function fill_table_column(table, nth_column, content, content_is_array)
@@ -123,4 +152,16 @@ function proba_map(nbr_de_veilleurs, death_proba)
 	for (i = 0; i <= nbr_de_veilleurs; i++)
 		results[i]= proba_map[i][nbr_de_veilleurs];
 	return results;
+}
+
+function moyenne_pond(numeric_array)
+{
+	var moyenne;
+	var length = numeric_array.length
+	
+	moyenne = 0;
+	for (i = 0; i < length; i++)
+		moyenne = moyenne + i * numeric_array[i];
+	moyenne = Math.round(moyenne*100)/100;
+	return moyenne;
 }
