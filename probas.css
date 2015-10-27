@@ -1,8 +1,7 @@
 body 
 {
-	min-height: 100%;
-	margin: 0;
-	padding: 0;
+	width: 62.5em;
+	margin:auto;
 	background-color : #7E4D2A;
 }
 header
@@ -12,23 +11,21 @@ header
 }
 footer
 {
-	width: 43.75em;
+	width: 36.594em;
 	margin: auto;
 }
 main
 {
-	width: 43.75em;
-	margin: 0 auto;
+	display: inline-block;
+	vertical-align:top;
 }
 
 nav
 {
 	background-color : #BD945C;
-	float : right;
-	width : 15.625 em;
-	margin-right: 0.938em;
 	border: ridge 0.188em #000000;
 	padding : 0.938em;
+	display:inline-block;
 }
 section
 {
@@ -51,8 +48,10 @@ section
 	display: inline-table;
 }
 
-#result_table, #result_table
+#result_table
 {
+	position: relative;
+	top: 
 	margin-left:3em;
 	border-spacing: 3px 0;
 }
